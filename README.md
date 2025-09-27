@@ -1,2 +1,3 @@
 # biblioteca
-A automated library system using OCR 
+
+A automated library system using OCR.
