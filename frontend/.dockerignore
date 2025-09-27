@@ -1,0 +1,13 @@
+Dockerfile*
+.dockerignore
+docker-compose.*
+/node_modules*
+npm-debug.log
+README.md
+/.next*
+/.vercel*
+/.github*
+/__tests__*
+.env*
+.git
+*.d.ts
