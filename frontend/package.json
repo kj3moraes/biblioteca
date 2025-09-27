@@ -6,22 +6,37 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --check --ignore-path .prettierignore .",
+    "format:fix": "prettier --write --ignore-path .prettierignore .",
+    "studio": "dotenv -e ./.env.local -- prisma studio",
+    "generate": "dotenv -e ./.env.local -- prisma generate",
+    "seed": "dotenv -e ./.env.local -- prisma db seed",
+    "migrate:local": "dotenv -e ./.env.local -- prisma migrate dev",
+    "migrate:production": "dotenv -e ./.env.production -- prisma migrate deploy"
   },
   "dependencies": {
+    "dotenv": "^17.2.2",
+    "next": "15.5.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.5.4"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
-    "@eslint/eslintrc": "^3"
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "prisma": "^6.16.2",
+    "tailwindcss": "^4",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2"
   }
 }
