@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import { NavMenu } from '@/components/Navbar';
 import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Biblioteca',
-  description: 'A web app to automatically ingest and find books in bookstores.',
+  description:
+    'A web app to automatically ingest and find books in bookstores.',
 };
 
 export default function RootLayout({
@@ -13,10 +15,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body
-        className={`antialiased`}
-      >
-        {children}
+      <head>
+        <link rel='icon' href='/images/icon.png' />
+      </head>
+      <body className='min-h-screen'>
+        <main className='relative h-screen'>
+          <NavMenu />
+          {children}
+        </main>
       </body>
     </html>
   );
