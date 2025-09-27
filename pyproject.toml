@@ -24,6 +24,9 @@ hf-transfer = "^0.1.9"
 numpy = "1.26.0"
 torch = "2.2.1"
 supervision = "0.6.0"
+easyocr = "^1.7.2"
+openai = "^1.109.1"
+pydantic = "^2.11.9"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,0 +1,21 @@
+{"author": "Harper Lee", "title": "To Kill a Mockingbird"}
+```
+{"author": "Kim Leine", "title": "The Prophets of Eternal Fjord"}
+```
+{"author": "Jonathan Lee", "title": "The Great Mistake"}
+```
+{'author': '', 'title': 'Asmodeus at Large'}
+```
+The title "Asmodeus at Large" is visible on the spine, but the author's name is not discernible from the image.
+{"author": "Chang-Rae Lee", "title": "My Year Abroad"}
+```
+{'author': 'Chang-Rae Lee', 'title': 'On Such a Full Sea'}
+```
+{'author': 'Harper Lee', 'title': 'To Kill a Mockingbird'}
+```
+{"author": "Marti Leimbach", "title": "Age of Consent"}
+```
+{'author': 'Harper Lee', 'title': 'To Kill a Mockingbird'}
+```
+{"author": "Nick Coleman", "title": "Pillow Man"}
+```
