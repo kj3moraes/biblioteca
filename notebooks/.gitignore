@@ -2,3 +2,5 @@
 /models*
 **/out*
 .env**
+/data**
+/.venv**
