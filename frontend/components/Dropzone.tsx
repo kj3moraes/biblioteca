@@ -30,7 +30,7 @@ export function Dropzone({ onFileUpload }: DropzoneProps) {
           type='file'
           className='hidden'
           onChange={handleFileChange}
-          accept='image/png,image/jpeg,image/gif'
+          accept='image/png,image/jpeg'
         />
       </label>
     </div>
