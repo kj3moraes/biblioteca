@@ -1,6 +1,7 @@
 Dockerfile*
 .dockerignore
 docker-compose.*
+/generated**
 /node_modules*
 npm-debug.log
 README.md
