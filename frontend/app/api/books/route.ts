@@ -6,13 +6,13 @@ const prisma = new PrismaClient();
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    
+
     // Extract query parameters
     const bookstoreId = searchParams.get('bookstoreId');
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const search = searchParams.get('search') || '';
-    
+
     // Validate required parameters
     if (!bookstoreId) {
       return NextResponse.json(
@@ -24,7 +24,10 @@ export async function GET(request: NextRequest) {
     // Validate pagination parameters
     if (page < 1 || limit < 1 || limit > 100) {
       return NextResponse.json(
-        { error: 'Invalid pagination parameters. Page must be >= 1, limit must be between 1-100' },
+        {
+          error:
+            'Invalid pagination parameters. Page must be >= 1, limit must be between 1-100',
+        },
         { status: 400 }
       );
     }
@@ -32,43 +35,67 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Build search conditions
-    const searchConditions = search ? {
-      OR: [
-        { book: { title: { contains: search, mode: 'insensitive' as const } } },
-        { book: { subtitle: { contains: search, mode: 'insensitive' as const } } },
-        { book: { authors: { some: { author: { name: { contains: search, mode: 'insensitive' as const } } } } } },
-        { book: { isbn: { contains: search, mode: 'insensitive' as const } } }
-      ]
-    } : {};
+    const searchConditions = search
+      ? {
+          OR: [
+            {
+              book: {
+                title: { contains: search, mode: 'insensitive' as const },
+              },
+            },
+            {
+              book: {
+                subtitle: { contains: search, mode: 'insensitive' as const },
+              },
+            },
+            {
+              book: {
+                authors: {
+                  some: {
+                    author: {
+                      name: { contains: search, mode: 'insensitive' as const },
+                    },
+                  },
+                },
+              },
+            },
+            {
+              book: {
+                isbn: { contains: search, mode: 'insensitive' as const },
+              },
+            },
+          ],
+        }
+      : {};
 
     // Get total count for pagination
     const totalCount = await prisma.inventory.count({
       where: {
         bookstoreId: parseInt(bookstoreId),
-        ...searchConditions
-      }
+        ...searchConditions,
+      },
     });
 
     // Get paginated results with related data
     const inventory = await prisma.inventory.findMany({
       where: {
         bookstoreId: parseInt(bookstoreId),
-        ...searchConditions
+        ...searchConditions,
       },
       include: {
         book: {
           include: {
             authors: {
               include: {
-                author: true
-              }
+                author: true,
+              },
             },
             genres: {
               include: {
-                genre: true
-              }
-            }
-          }
+                genre: true,
+              },
+            },
+          },
         },
         bookstore: {
           select: {
@@ -76,17 +103,17 @@ export async function GET(request: NextRequest) {
             name: true,
             address: true,
             city: true,
-            country: true
-          }
-        }
+            country: true,
+          },
+        },
       },
       skip,
       take: limit,
       orderBy: {
         book: {
-          title: 'asc'
-        }
-      }
+          title: 'asc',
+        },
+      },
     });
 
     // Calculate pagination metadata
@@ -95,7 +122,7 @@ export async function GET(request: NextRequest) {
     const hasPrevPage = page > 1;
 
     // Format the response
-    const formattedBooks = inventory.map(item => ({
+    const formattedBooks = inventory.map((item) => ({
       id: item.book.id,
       title: item.book.title,
       subtitle: item.book.subtitle,
@@ -104,30 +131,30 @@ export async function GET(request: NextRequest) {
       publicationYear: item.book.publicationYear,
       pageCount: item.book.pageCount,
       description: item.book.description,
-      authors: item.book.authors.map(ba => ({
+      authors: item.book.authors.map((ba) => ({
         id: ba.author.id,
         name: ba.author.name,
-        bio: ba.author.bio
+        bio: ba.author.bio,
       })),
-      genres: item.book.genres.map(bg => ({
+      genres: item.book.genres.map((bg) => ({
         id: bg.genre.id,
-        name: bg.genre.name
+        name: bg.genre.name,
       })),
       inventory: {
         id: item.id,
         stockCount: item.stockCount,
         price: item.price,
-        lastUpdated: item.lastUpdated
+        lastUpdated: item.lastUpdated,
       },
       bookstore: {
         id: item.bookstore.id,
         name: item.bookstore.name,
         address: item.bookstore.address,
         city: item.bookstore.city,
-        country: item.bookstore.country
+        country: item.bookstore.country,
       },
       createdAt: item.book.createdAt,
-      updatedAt: item.book.updatedAt
+      updatedAt: item.book.updatedAt,
     }));
 
     return NextResponse.json({
@@ -139,14 +166,13 @@ export async function GET(request: NextRequest) {
         totalCount,
         totalPages,
         hasNextPage,
-        hasPrevPage
+        hasPrevPage,
       },
       filters: {
         bookstoreId: parseInt(bookstoreId),
-        search
-      }
+        search,
+      },
     });
-
   } catch (error) {
     console.error('Error fetching books:', error);
     return NextResponse.json(

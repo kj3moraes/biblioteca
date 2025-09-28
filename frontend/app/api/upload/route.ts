@@ -13,12 +13,18 @@ export async function POST(request: NextRequest) {
     }
 
     if (!fileName) {
-      return NextResponse.json({ error: 'No filename provided' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'No filename provided' },
+        { status: 400 }
+      );
     }
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      return NextResponse.json({ error: 'File must be an image' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'File must be an image' },
+        { status: 400 }
+      );
     }
 
     // Convert file to buffer
@@ -27,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     // Define the upload directory path
     const uploadDir = join(process.cwd(), 'public', 'uploads');
-    
+
     // Ensure uploads directory exists
     try {
       await mkdir(uploadDir, { recursive: true });
@@ -49,7 +55,6 @@ export async function POST(request: NextRequest) {
       size: file.size,
       type: file.type,
     });
-
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json(

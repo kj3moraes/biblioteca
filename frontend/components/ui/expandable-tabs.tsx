@@ -47,7 +47,12 @@ const spanVariants = {
   exit: { width: 0, opacity: 0 },
 };
 
-const transition = { delay: 0.1, type: 'spring' as const, bounce: 0, duration: 0.6 };
+const transition = {
+  delay: 0.1,
+  type: 'spring' as const,
+  bounce: 0,
+  duration: 0.6,
+};
 
 export function ExpandableTabs({
   tabs,
@@ -71,14 +76,14 @@ export function ExpandableTabs({
   };
 
   const Separator = () => (
-    <div className='mx-1 h-[24px] w-[1.2px] bg-border' aria-hidden='true' />
+    <div className='bg-border mx-1 h-[24px] w-[1.2px]' aria-hidden='true' />
   );
 
   return (
     <div
       ref={outsideClickRef}
       className={cn(
-        'z-50 flex max-w-[90vw] items-center gap-2 overflow-x-auto whitespace-nowrap rounded-2xl border bg-background p-1 shadow-sm',
+        'bg-background z-50 flex max-w-[90vw] items-center gap-2 overflow-x-auto rounded-2xl border p-1 whitespace-nowrap shadow-sm',
         className
       )}
     >

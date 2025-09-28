@@ -33,7 +33,7 @@ export function NavMenu() {
         router.push('/bookstore/add');
         break;
       case 2:
-        router.push('/bookstore/inventory')
+        router.push('/bookstore/inventory');
         break;
     }
   };
