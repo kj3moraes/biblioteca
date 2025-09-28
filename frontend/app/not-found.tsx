@@ -10,7 +10,7 @@ export default function NotFound() {
     <div className='bg-white dark:bg-gray-900'>
       <div className='container mx-auto min-h-screen px-6 py-12 lg:flex lg:items-center lg:gap-12'>
         <div className='wf-ull space-y-4 lg:w-1/2'>
-          <h1 className='mt-3 text-2xl font-semibold text-gray-800 dark:text-white md:text-3xl'>
+          <h1 className='mt-3 text-2xl font-semibold text-gray-800 md:text-3xl dark:text-white'>
             Oops, not found.
           </h1>
           <p className='text-gray-600'>
