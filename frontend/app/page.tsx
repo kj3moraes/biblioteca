@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <div>
-      <p>asa</p>
+      <p>Soon to be added</p>
     </div>
   );
 }
