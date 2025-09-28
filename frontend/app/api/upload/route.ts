@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
       await mkdir(uploadDir, { recursive: true });
     } catch (error) {
       // Directory might already exist, that's fine
+      console.error(error);
     }
 
     // Define the file path
