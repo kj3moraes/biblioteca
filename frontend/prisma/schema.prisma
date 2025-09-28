@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bookstore {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String
+  address     String
+  city        String
+  country     String
+  phone       String?
+  email       String?
+  latitude    Float?
+  longitude   Float?
+  
+  // Metadata
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relationships
+  inventory   Inventory[]
+}
+
+
+model Book {
+  id            Int          @id @default(autoincrement())
+  title         String
+  subtitle      String?
+  isbn          String?      @unique
+  language      String?
+  publicationYear Int?
+  pageCount     Int?
+  description   String?
+
+  // Relationships
+  authors       BookAuthor[]
+  genres        BookGenre[]
+  inventory     Inventory[]
+
+  // Metadata
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+
+model Author {
+  id          Int          @id @default(autoincrement())
+  name        String 
+  bio         String?
+
+  books       BookAuthor[]
+}
+
+
+model Genre {
+  id      Int        @id @default(autoincrement())
+  name    String     @unique
+  books   BookGenre[]
+}
+
+
+model Inventory {
+  id          Int       @id @default(autoincrement())
+  bookstoreId Int
+  bookId      Int
+  stockCount  Int       @default(0)
+  price       Float?
+  lastUpdated DateTime  @default(now())
+
+  bookstore   Bookstore @relation(fields: [bookstoreId], references: [id])
+  book        Book      @relation(fields: [bookId], references: [id])
+
+  // Metadata
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([bookstoreId, bookId]) // prevents duplicates
+}
+
+
+model BookAuthor {
+  id       Int   @id @default(autoincrement())
+  bookId   Int
+  authorId Int
+
+  book     Book   @relation(fields: [bookId], references: [id])
+  author   Author @relation(fields: [authorId], references: [id])
+
+  @@unique([bookId, authorId])
+}
+
+
+model BookGenre {
+  id      Int   @id @default(autoincrement())
+  bookId  Int
+  genreId Int
+
+  book    Book   @relation(fields: [bookId], references: [id])
+  genre   Genre  @relation(fields: [genreId], references: [id])
+
+  @@unique([bookId, genreId])
+}

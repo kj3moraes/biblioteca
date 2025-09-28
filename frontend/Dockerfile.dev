@@ -1,0 +1,32 @@
+FROM node:22-alpine
+
+# Install dependencies
+RUN apk add --no-cache libc6-compat openssl
+
+WORKDIR /app
+
+# Enable pnpm
+RUN corepack enable pnpm
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+COPY prisma ./prisma/
+
+# Install dependencies
+RUN pnpm install
+
+# Generate Prisma Client
+RUN pnpm generate
+
+# Copy source code
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Set environment variables for development
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Start development server
+CMD ["pnpm", "run", "dev"] 
