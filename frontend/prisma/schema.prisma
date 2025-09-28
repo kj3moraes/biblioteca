@@ -17,6 +17,7 @@ datasource db {
 model Bookstore {
   id          Int       @id @default(autoincrement())
   name        String
+  slug        String
   address     String
   city        String
   country     String
@@ -81,6 +82,10 @@ model Inventory {
 
   bookstore   Bookstore @relation(fields: [bookstoreId], references: [id])
   book        Book      @relation(fields: [bookId], references: [id])
+
+  // Metadata
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@unique([bookstoreId, bookId]) // prevents duplicates
 }
