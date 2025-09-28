@@ -8,6 +8,7 @@ pnpm-lock.yaml
 vectordb/*
 hybriddb/*
 prisma/*
+/generated**
 meilisearch_data/*
 qdrant_storage/*
 coverage/*
