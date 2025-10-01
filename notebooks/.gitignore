@@ -4,3 +4,6 @@
 .env**
 /data**
 /.venv**
+/runs**
+/wandb**
+/yolo-book-training**
