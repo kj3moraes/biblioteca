@@ -1,4 +1,1 @@
-/img*
-/models*
-**/out*
-.env**
+/.venv**

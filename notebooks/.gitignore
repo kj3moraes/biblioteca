@@ -1,0 +1,9 @@
+/img*
+/models*
+**/out*
+.env**
+/data**
+/.venv**
+/runs**
+/wandb**
+/yolo-book-training**
