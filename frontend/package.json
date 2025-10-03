@@ -13,7 +13,8 @@
     "generate": "dotenv -e ./.env.local -- prisma generate",
     "seed": "dotenv -e ./.env.local -- prisma db seed",
     "migrate:local": "dotenv -e ./.env.local -- prisma migrate dev",
-    "migrate:production": "dotenv -e ./.env.production -- prisma migrate deploy"
+    "migrate:production": "dotenv -e ./.env.production -- prisma migrate deploy",
+    "migrate:staging": "dotenv -e ./.env.staging -- prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "6.16.2",
