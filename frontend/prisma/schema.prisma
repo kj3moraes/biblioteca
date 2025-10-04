@@ -17,12 +17,12 @@ datasource db {
 model Bookstore {
   id          Int       @id @default(autoincrement())
   name        String
-  slug        String
+  slug        String    @unique
   address     String
   city        String
   country     String
-  phone       String?
-  email       String?
+  phone       String?   @unique
+  email       String?   @unique
   latitude    Float?
   longitude   Float?
   
