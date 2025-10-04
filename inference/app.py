@@ -96,15 +96,6 @@ async def predict(request: Request, files: List[UploadFile] = File(...)):
     
     logger.info(f"Total book crops extracted: {len(all_book_crops)}")
     
-    # Debug: Save all book crops to filesystem
-    import os
-    debug_dir = "debug_crops"
-    os.makedirs(debug_dir, exist_ok=True)
-    
-    for i, crop in enumerate(all_book_crops):
-        crop.save(f"{debug_dir}/book_crop_{i:03d}.jpg")
-        logger.info(f"Saved debug crop: {debug_dir}/book_crop_{i:03d}.jpg")
-    
     # Batch process all crops with OCR
     book_results = []
     for i, crop in enumerate(all_book_crops):
