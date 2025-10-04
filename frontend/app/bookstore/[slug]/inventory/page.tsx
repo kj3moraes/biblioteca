@@ -164,7 +164,6 @@ export default function Page() {
           placeholder='Search by title, author, or ISBN...'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={handleKeyPress}
         />
         <Button variant='outline' onClick={handleSearch} disabled={isLoading}>
           {isLoading ? (
