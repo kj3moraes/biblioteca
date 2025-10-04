@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { listFilesInBookstoreFolder, getBookstoreImageUrl, BUCKET_NAME } from '@/lib/s3';
+import {
+  listFilesInBookstoreFolder,
+  getBookstoreImageUrl,
+  BUCKET_NAME,
+} from '@/lib/s3';
 
 export async function GET(
   request: NextRequest,
