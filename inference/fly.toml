@@ -4,7 +4,7 @@
 #
 
 app = 'inference'
-primary_region = 'yyz'
+primary_region = 'ord'
 
 [build]
 
@@ -20,3 +20,5 @@ primary_region = 'yyz'
   memory = '2gb'
   cpu_kind = 'shared'
   cpus = 2
+  gpus = 1
+  gpu_kind = "a10"
