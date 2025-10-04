@@ -1,0 +1,6 @@
+models/**
+*.pt
+.env**
+/__pycache__**
+/debug**
+.venv**
