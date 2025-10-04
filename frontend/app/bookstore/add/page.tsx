@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -21,6 +22,7 @@ const formSchema = z.object({
 });
 
 export default function Page() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,6 +44,8 @@ export default function Page() {
 
     if (response.ok) {
       console.log('Bookstore added successfully');
+      // Once we have create the bookstore, we redirect to the add page
+      router.push(`/bookstore/${data.slug}/add`);
     } else {
       console.log('Failed to add bookstore');
     }
