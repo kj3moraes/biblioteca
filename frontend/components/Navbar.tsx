@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 import { ExpandableTabs } from './ui/expandable-tabs';
-import { Home, PackagePlus, Library } from 'lucide-react';
+import { Home, PackagePlus } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
 export function NavMenu() {

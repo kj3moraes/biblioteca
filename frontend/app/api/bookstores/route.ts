@@ -3,7 +3,7 @@ import { PrismaClient } from '@/generated/prisma';
 
 const prisma = new PrismaClient();
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const bookstores = await prisma.bookstore.findMany({
       select: {

@@ -28,7 +28,9 @@ export async function POST(request: NextRequest) {
         const buffer = Buffer.from(bytes);
 
         // server-side unique key: bookstoreSlug/book_YYYYmmddTHHMMSSms_idx.ext
-        const ext = file.name.includes('.') ? file.name.split('.').pop() : 'jpg';
+        const ext = file.name.includes('.')
+          ? file.name.split('.').pop()
+          : 'jpg';
         const ts = new Date().toISOString().replace(/[:.]/g, '-');
         const key = `${bookstoreSlug}/book_${ts}_${idx}.${ext}`;
 
@@ -38,7 +40,12 @@ export async function POST(request: NextRequest) {
           file: buffer,
         });
 
-        return { originalName: file.name, key, size: file.size, type: file.type };
+        return {
+          originalName: file.name,
+          key,
+          size: file.size,
+          type: file.type,
+        };
       })
     );
 
@@ -50,7 +57,10 @@ export async function POST(request: NextRequest) {
       if (r.status === 'fulfilled') {
         uploaded.push({ originalName, key: r.value.key, size: r.value.size });
       } else {
-        failed.push({ originalName, error: (r.reason as Error)?.message || 'Upload failed' });
+        failed.push({
+          originalName,
+          error: (r.reason as Error)?.message || 'Upload failed',
+        });
       }
     });
 

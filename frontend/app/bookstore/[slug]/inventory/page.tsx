@@ -129,12 +129,6 @@ export default function Page() {
     fetchBooks(newPage, searchTerm);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
-
   const formatAuthors = (authors: Author[]) => {
     return authors.map((author) => author.name).join(', ');
   };

@@ -7,14 +7,16 @@ interface DropzoneProps {
 export function Dropzone({ onFilesUpload }: DropzoneProps) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files ? Array.from(event.target.files) : [];
-      if (files.length > 0) {
+    if (files.length > 0) {
       onFilesUpload(files);
     }
   };
 
   const handleDrop = (event: React.DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
-    const files = event.dataTransfer.files ? Array.from(event.dataTransfer.files) : [];
+    const files = event.dataTransfer.files
+      ? Array.from(event.dataTransfer.files)
+      : [];
     if (files.length > 0) {
       onFilesUpload(files);
     }

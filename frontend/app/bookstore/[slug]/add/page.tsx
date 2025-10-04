@@ -1,6 +1,5 @@
 'use client';
 import { Dropzone } from '@/components/Dropzone';
-import { useState } from 'react';
 import { useParams } from 'next/navigation';
 
 export default function Page() {
@@ -9,7 +8,7 @@ export default function Page() {
 
   const uploadImages = async (files: File[]) => {
     try {
-      const images = files.filter(f => f.type.startsWith('image/'));
+      const images = files.filter((f) => f.type.startsWith('image/'));
       if (!images.length) throw new Error('Please select image files');
 
       const form = new FormData();
