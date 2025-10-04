@@ -1,4 +1,5 @@
 services:
+  # Database
   db:
     image: postgres:17
     container_name: db_dev
@@ -16,8 +17,29 @@ services:
       test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
       interval: 1s
       timeout: 5s
-      retries: 10 
+      retries: 10
+
+  # Static object storage 
+  media:
+    image: minio/minio:RELEASE.2025-06-13T11-33-47Z
+    container_name: media_dev
+    ports:
+      - "9090:9000"
+      - "9091:9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER?Variable not set}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD?Variable not set}      
+    volumes:
+      - static-dev-data:/data
+    command: ["server", "--console-address", ":9001", "/data"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3 
 
 volumes:
   db-dev-data:
+    driver: local
+  static-dev-data:
     driver: local
