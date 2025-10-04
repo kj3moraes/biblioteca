@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/table';
 import { useState, useEffect, useCallback } from 'react';
 import { Author, Genre } from '@/generated/prisma';
+import { useParams } from 'next/navigation';
 
 interface Book {
   id: number;
@@ -73,9 +74,8 @@ export default function Page() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // For demo purposes, using bookstore ID 1
-  const bookstoreId = 1;
+  const params = useParams();
+  const bookstoreSlug = params.slug as string;
 
   const fetchBooks = useCallback(
     async (page: number = 1, search: string = '') => {
@@ -84,7 +84,7 @@ export default function Page() {
 
       try {
         const params = new URLSearchParams({
-          bookstoreId: bookstoreId.toString(),
+          bookstoreSlug: bookstoreSlug,
           page: page.toString(),
           limit: '10',
         });
@@ -114,7 +114,7 @@ export default function Page() {
         setIsLoading(false);
       }
     },
-    [bookstoreId]
+    [bookstoreSlug]
   );
 
   useEffect(() => {
@@ -127,12 +127,6 @@ export default function Page() {
 
   const handlePageChange = (newPage: number) => {
     fetchBooks(newPage, searchTerm);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
   };
 
   const formatAuthors = (authors: Author[]) => {
@@ -164,7 +158,6 @@ export default function Page() {
           placeholder='Search by title, author, or ISBN...'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={handleKeyPress}
         />
         <Button variant='outline' onClick={handleSearch} disabled={isLoading}>
           {isLoading ? (

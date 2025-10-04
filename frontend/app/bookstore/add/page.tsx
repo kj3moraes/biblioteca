@@ -1,72 +1,129 @@
 'use client';
-import { Dropzone } from '@/components/Dropzone';
-import { useState } from 'react';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { z } from 'zod';
+
+const formSchema = z.object({
+  name: z.string().min(1),
+  slug: z.string().min(1),
+  address: z.string().min(1),
+  city: z.string().min(1),
+  country: z.string().min(1),
+});
 
 export default function Page() {
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const router = useRouter();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      slug: '',
+      address: '',
+      city: '',
+      country: '',
+    },
+  });
 
-  const uploadImages = async (file: File) => {
-    try {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        throw new Error('Please select an image file');
-      }
+  // Sends the form data to the API
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    console.log(data);
+    const response = await fetch('/api/bookstores', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
 
-      // Generate unique filename
-      const timestamp = Date.now();
-      const fileExtension = file.name.split('.').pop();
-      const fileName = `book_${timestamp}.${fileExtension}`;
-
-      // Create FormData for the upload
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('fileName', fileName);
-
-      // Upload to API route (we'll need to create this)
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
-
-      const result = await response.json();
-
-      // Add to uploaded files state
-      setUploadedFiles((prev) => [...prev, file]);
-
-      console.log('File uploaded successfully:', result);
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      alert('Failed to upload file. Please try again.');
+    if (response.ok) {
+      console.log('Bookstore added successfully');
+      // Once we have create the bookstore, we redirect to the add page
+      router.push(`/bookstore/${data.slug}/add`);
+    } else {
+      console.log('Failed to add bookstore');
     }
   };
 
   return (
-    <div className='p-4'>
-      <div className='my-4'>
-        <h2 className='text-2xl font-bold'>Add Images</h2>
-        <p>
-          Add all the images that you want added to your inventory. Once the
-          identification process is over, you will be prompted to check the
-          validity of the results.
-        </p>
+    <div className='flex h-screen flex-col items-center justify-center'>
+      <h1 className='text-2xl font-bold'>Add Bookstore</h1>
+      <p className='text-sm text-gray-500'>
+        Add a new bookstore to the database.
+      </p>
+      <div className='w-full max-w-xl'>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='slug'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Slug</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='address'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='city'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='country'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Country</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <Button type='submit'>Submit</Button>
+          </form>
+        </Form>
       </div>
-      <Dropzone onFileUpload={uploadImages} />
-      {uploadedFiles.length > 0 && (
-        <div className='mt-4'>
-          <h2 className='mb-2 text-lg font-semibold'>Uploaded Files:</h2>
-          <ul className='list-inside list-disc'>
-            {uploadedFiles.map((file, index) => (
-              <li key={index} className='text-sm text-gray-600'>
-                {file.name} ({(file.size / 1024).toFixed(1)} KB)
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }

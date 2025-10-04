@@ -17,6 +17,19 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
+  
+  # Static object storage 
+  static:
+    image: minio/minio
+    container_name: static_dev
+    restart: always
+    volumes:
+      - static-data:/data
+    ports:
+      - 9000:9000
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER?Variable not set}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD?Variable not set}
 
   app:
     build:
@@ -26,7 +39,9 @@ services:
     restart: always
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_started
+      static:
+        condition: service_started
     environment:
       - NODE_ENV=${NODE_ENV}
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
@@ -38,3 +53,6 @@ services:
 
 volumes:
   db-data:
+    driver: local
+  static-data:
+    driver: local

@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 import { ExpandableTabs } from './ui/expandable-tabs';
-import { Home, PackagePlus, Library } from 'lucide-react';
+import { Home, PackagePlus } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
 export function NavMenu() {
@@ -10,15 +10,13 @@ export function NavMenu() {
 
   const tabs = [
     { title: 'Map', icon: Home },
-    { title: 'Add', icon: PackagePlus },
-    { title: 'Inventory', icon: Library },
+    { title: 'Create Store', icon: PackagePlus },
   ];
 
   // Function to determine the currently selected tab based on pathname
   const getSelectedTab = (): number | null => {
     if (pathname === '/') return 0;
     if (pathname === '/bookstore/add') return 1;
-    if (pathname === '/bookstore/inventory') return 2;
     return null;
   };
 
@@ -31,9 +29,6 @@ export function NavMenu() {
         break;
       case 1:
         router.push('/bookstore/add');
-        break;
-      case 2:
-        router.push('/bookstore/inventory');
         break;
     }
   };

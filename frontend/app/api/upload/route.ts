@@ -1,61 +1,70 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { saveFileInBucket, BUCKET_NAME } from '@/lib/s3';
 
 export async function POST(request: NextRequest) {
   try {
     const data = await request.formData();
-    const file: File | null = data.get('file') as unknown as File;
-    const fileName: string = data.get('fileName') as string;
+    const files: File[] = data.getAll('files') as unknown as File[];
+    const bookstoreSlug: string = data.get('bookstoreSlug') as string;
 
-    if (!file) {
+    if (!files.length) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    if (!fileName) {
+    if (!bookstoreSlug) {
       return NextResponse.json(
-        { error: 'No filename provided' },
+        { error: 'No bookstore slug provided' },
         { status: 400 }
       );
     }
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      return NextResponse.json(
-        { error: 'File must be an image' },
-        { status: 400 }
-      );
-    }
-
     // Convert file to buffer
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const results = await Promise.allSettled(
+      files.map(async (file, idx) => {
+        if (!file.type?.startsWith('image/')) {
+          throw new Error('File must be an image');
+        }
 
-    // Define the upload directory path
-    const uploadDir = join(process.cwd(), 'public', 'uploads');
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
 
-    // Ensure uploads directory exists
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (error) {
-      // Directory might already exist, that's fine
-      console.error(error);
-    }
+        // server-side unique key: bookstoreSlug/book_YYYYmmddTHHMMSSms_idx.ext
+        const ext = file.name.includes('.')
+          ? file.name.split('.').pop()
+          : 'jpg';
+        const ts = new Date().toISOString().replace(/[:.]/g, '-');
+        const key = `${bookstoreSlug}/book_${ts}_${idx}.${ext}`;
 
-    // Define the file path
-    const filePath = join(uploadDir, fileName);
+        await saveFileInBucket({
+          bucketName: BUCKET_NAME,
+          fileName: key,
+          file: buffer,
+        });
 
-    // Write the file
-    await writeFile(filePath, buffer);
+        return {
+          originalName: file.name,
+          key,
+          size: file.size,
+          type: file.type,
+        };
+      })
+    );
 
-    // Return success response with file info
-    return NextResponse.json({
-      success: true,
-      fileName,
-      filePath: `/uploads/${fileName}`,
-      size: file.size,
-      type: file.type,
+    const uploaded: { originalName: string; key: string; size: number }[] = [];
+    const failed: { originalName: string; error: string }[] = [];
+
+    results.forEach((r, i) => {
+      const originalName = files[i]?.name ?? `file_${i}`;
+      if (r.status === 'fulfilled') {
+        uploaded.push({ originalName, key: r.value.key, size: r.value.size });
+      } else {
+        failed.push({
+          originalName,
+          error: (r.reason as Error)?.message || 'Upload failed',
+        });
+      }
     });
+
+    return NextResponse.json({ uploaded, failed });
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json(
