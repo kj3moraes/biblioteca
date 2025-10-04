@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { listFilesInBookstoreFolder, getBookstoreImageUrl } from '@/lib/s3';
+import { listFilesInBookstoreFolder, getBookstoreImageUrl, BUCKET_NAME } from '@/lib/s3';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { bookstoreSlug: string } }
+  { params }: { params: Promise<{ bookstoreSlug: string }> }
 ) {
   try {
-    const { bookstoreSlug } = params;
-    const bucketName = 'media';
+    const { bookstoreSlug } = await params;
+    const bucketName = BUCKET_NAME;
 
     if (!bookstoreSlug) {
       return NextResponse.json(

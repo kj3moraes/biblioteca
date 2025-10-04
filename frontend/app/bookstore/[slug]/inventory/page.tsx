@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/table';
 import { useState, useEffect, useCallback } from 'react';
 import { Author, Genre } from '@/generated/prisma';
+import { useParams } from 'next/navigation';
 
 interface Book {
   id: number;
@@ -73,9 +74,8 @@ export default function Page() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // For demo purposes, using bookstore ID 1
-  const bookstoreId = 1;
+  const params = useParams();
+  const bookstoreSlug = params.slug as string;
 
   const fetchBooks = useCallback(
     async (page: number = 1, search: string = '') => {
@@ -84,7 +84,7 @@ export default function Page() {
 
       try {
         const params = new URLSearchParams({
-          bookstoreId: bookstoreId.toString(),
+          bookstoreSlug: bookstoreSlug,
           page: page.toString(),
           limit: '10',
         });
@@ -114,7 +114,7 @@ export default function Page() {
         setIsLoading(false);
       }
     },
-    [bookstoreId]
+    [bookstoreSlug]
   );
 
   useEffect(() => {

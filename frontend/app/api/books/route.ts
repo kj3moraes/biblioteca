@@ -8,13 +8,13 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
 
     // Extract query parameters
-    const bookstoreId = searchParams.get('bookstoreId');
+    const bookstoreSlug = searchParams.get('bookstoreId');
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const search = searchParams.get('search') || '';
 
     // Validate required parameters
-    if (!bookstoreId) {
+    if (!bookstoreSlug) {
       return NextResponse.json(
         { error: 'bookstoreId is required' },
         { status: 400 }
@@ -68,10 +68,16 @@ export async function GET(request: NextRequest) {
         }
       : {};
 
+    const bookstore = await prisma.bookstore.findUnique({
+      where: {
+        slug: bookstoreSlug as string,
+      },
+    });
+
     // Get total count for pagination
     const totalCount = await prisma.inventory.count({
       where: {
-        bookstoreId: parseInt(bookstoreId),
+        bookstoreId: bookstore?.id,
         ...searchConditions,
       },
     });
@@ -79,7 +85,7 @@ export async function GET(request: NextRequest) {
     // Get paginated results with related data
     const inventory = await prisma.inventory.findMany({
       where: {
-        bookstoreId: parseInt(bookstoreId),
+        bookstoreId: bookstore?.id,
         ...searchConditions,
       },
       include: {
@@ -169,7 +175,7 @@ export async function GET(request: NextRequest) {
         hasPrevPage,
       },
       filters: {
-        bookstoreId: parseInt(bookstoreId),
+        bookstoreId: bookstore?.id,
         search,
       },
     });
