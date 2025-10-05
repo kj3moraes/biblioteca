@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Check, X, Trash2 } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 
 interface DetectedBook {
   title: string;

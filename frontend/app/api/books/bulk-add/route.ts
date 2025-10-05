@@ -9,6 +9,19 @@ interface BookToAdd {
   count: number;
 }
 
+interface BookResultAdd {
+  title: string;
+  author: string;
+  count: number;
+  inventoryId: number;
+  newStockCount: number;  
+}
+
+interface BookResultError {
+  error: string;
+  book: BookToAdd
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -43,9 +56,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+
     const results = {
-      added: [] as any[],
-      errors: [] as any[],
+      added: [] as BookResultAdd[],
+      errors: [] as BookResultError[],
     };
 
     // Process each book
