@@ -3,14 +3,14 @@ import type internal from 'stream';
 
 // Create a new Minio client with the S3 endpoint, access key, and secret key
 export const s3Client = new Minio.Client({
-  endPoint: process.env.S3_ENDPOINT || 'localhost',
-  port: process.env.S3_PORT ? Number(process.env.S3_PORT) : 9090,
-  accessKey: process.env.S3_ACCESS_KEY,
-  secretKey: process.env.S3_SECRET_KEY,
+  endPoint: process.env.AWS_ENDPOINT_URL_S3 || 'localhost',
+  port: parseInt(process.env.AWS_ENDPOINT_PORT_S3 || '443') || 443,
+  accessKey: process.env.AWS_ACCESS_KEY_ID,
+  secretKey: process.env.AWS_SECRET_ACCESS_KEY,
   useSSL: process.env.S3_USE_SSL === 'true',
 });
 
-export const BUCKET_NAME = process.env.S3_BUCKET_NAME || 'media';
+export const BUCKET_NAME = process.env.BUCKET_NAME || 'media';
 
 export async function createBucketIfNotExists(bucketName: string) {
   const bucketExists = await s3Client.bucketExists(bucketName);
