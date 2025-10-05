@@ -14,12 +14,12 @@ interface BookResultAdd {
   author: string;
   count: number;
   inventoryId: number;
-  newStockCount: number;  
+  newStockCount: number;
 }
 
 interface BookResultError {
   error: string;
-  book: BookToAdd
+  book: BookToAdd;
 }
 
 export async function POST(request: NextRequest) {
@@ -55,7 +55,6 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
-
 
     const results = {
       added: [] as BookResultAdd[],
