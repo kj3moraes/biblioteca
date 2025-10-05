@@ -89,6 +89,7 @@ export default function Page() {
           limit: '10',
         });
 
+
         if (search.trim()) {
           params.append('search', search.trim());
         }
