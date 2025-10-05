@@ -24,9 +24,20 @@ export default function Page() {
       if (!images.length) throw new Error('Please select image files');
 
       const form = new FormData();
+      form.append('bookstoreSlug', bookstoreSlug);
       // Send raw files to inference API
       for (const f of images) {
         form.append('files', f, f.name);
+      }
+
+      // Upload the images
+      const upload_response = await fetch('/api/upload', {
+        method: 'POST',
+        body: form,
+      });
+
+      if (!upload_response.ok) {
+        throw new Error('Upload failed');
       }
 
       // Send to inference API
