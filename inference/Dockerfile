@@ -9,6 +9,12 @@ COPY requirements.txt ./
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install torch
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+# Install ultralytics
+RUN pip install --no-cache-dir ultralytics --no-deps
+
 # Copy application code
 COPY . .
 

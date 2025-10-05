@@ -11,7 +11,7 @@ import io
 from schema import BookInfo
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("biblioteca_api")
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
