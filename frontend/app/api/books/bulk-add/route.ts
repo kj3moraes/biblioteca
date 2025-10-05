@@ -164,7 +164,5 @@ export async function POST(request: NextRequest) {
       { error: 'Failed to add books to inventory' },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
