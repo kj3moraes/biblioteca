@@ -6,6 +6,10 @@
 app = 'inference'
 primary_region = 'ord'
 
+[mounts]
+  source = "models_data"
+  destination = "/app/models"
+
 [http_service]
   internal_port = 8080
   force_https = true

@@ -27,12 +27,10 @@ app = FastAPI(
 )
 
 detect_model = YOLO('./models/yolov9c.pt')
-sam_model = YOLO('./models/FastSAM-s.pt')
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 logger.info(f"Using device: {DEVICE}")
 detect_model.to(DEVICE)
-sam_model.to(DEVICE)
 
 # Add CORS middleware
 app.add_middleware(
@@ -47,8 +45,8 @@ app.add_middleware(
 async def root():
     return {"message": "Biblioteca AI Inference API is running!"}
 
-@app.get("/health_check")
-async def health_check():
+@app.get("/healthcheck")
+async def healthcheck():
     return {"status": "healthy", "message": "Fear is the mind killer. Fear is the little death that brings total obliteration."}
 
 @app.post("/api/predict", response_model=PredictOut)
