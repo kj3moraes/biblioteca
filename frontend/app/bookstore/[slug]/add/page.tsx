@@ -1,8 +1,11 @@
 'use client';
 import { Dropzone } from '@/components/Dropzone';
-import { BookConfirmation } from '../../../../components/BookConfirmation';
+import { BookConfirmation } from '@/components/BookConfirmation';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Home } from 'lucide-react';
 
 interface DetectedBook {
   title: string;
@@ -103,11 +106,21 @@ export default function Page() {
     return (
       <div className='flex h-screen flex-col items-center justify-center p-4'>
         <div className='w-full max-w-4xl space-y-4'>
-          <h1 className='text-2xl font-bold'>Confirm Detected Books</h1>
-          <p className='text-sm text-gray-500'>
-            Please review and edit the detected books below. Click confirm to
-            add them to your inventory.
-          </p>
+          <div className='flex items-center justify-between'>
+            <div>
+              <h1 className='text-2xl font-bold'>Confirm Detected Books</h1>
+              <p className='text-sm text-gray-500'>
+                Please review and edit the detected books below. Click confirm
+                to add them to your inventory.
+              </p>
+            </div>
+            <Link href={`/bookstore/${bookstoreSlug}`}>
+              <Button variant='outline' size='sm'>
+                <Home className='mr-2 h-4 w-4' />
+                Home
+              </Button>
+            </Link>
+          </div>
           <BookConfirmation
             books={detectedBooks}
             onBooksConfirmed={handleBooksConfirmed}
@@ -121,12 +134,22 @@ export default function Page() {
   return (
     <div className='flex h-screen flex-col items-center justify-center'>
       <div className='w-full max-w-2xl space-y-4'>
-        <h1 className='text-2xl font-bold'>Add Images</h1>
-        <p className='text-sm text-gray-500'>
-          Add all the images that you want added to your inventory. Once the
-          identification process is over, you will be prompted to check the
-          validity of the results.
-        </p>
+        <div className='flex items-center justify-between'>
+          <div>
+            <h1 className='text-2xl font-bold'>Add Images</h1>
+            <p className='text-sm text-gray-500'>
+              Add all the images that you want added to your inventory. Once the
+              identification process is over, you will be prompted to check the
+              validity of the results.
+            </p>
+          </div>
+          <Link href={`/bookstore/${bookstoreSlug}`}>
+            <Button variant='outline' size='sm'>
+              <Home className='mr-2 h-4 w-4' />
+              Home
+            </Button>
+          </Link>
+        </div>
         {isProcessing ? (
           <div className='flex h-64 w-full items-center justify-center rounded-lg border-2 border-dashed'>
             <div className='text-center'>

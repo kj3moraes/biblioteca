@@ -9,6 +9,7 @@ export async function GET() {
       select: {
         name: true,
         slug: true,
+        address: true,
         city: true,
         country: true,
         phone: true,
@@ -22,7 +23,7 @@ export async function GET() {
       { error: 'Failed to fetch bookstores' },
       { status: 500 }
     );
-  } 
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -58,5 +59,5 @@ export async function POST(request: NextRequest) {
       { error: 'Failed to create bookstore' },
       { status: 500 }
     );
-  } 
+  }
 }
