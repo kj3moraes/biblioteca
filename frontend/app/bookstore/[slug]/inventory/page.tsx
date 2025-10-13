@@ -1,7 +1,8 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Loader2, Home } from 'lucide-react';
+import Link from 'next/link';
 import {
   Table,
   TableBody,
@@ -144,13 +145,27 @@ export default function Page() {
 
   return (
     <div className='mx-auto flex max-w-7xl flex-col items-center p-4'>
-      <div className='mb-6 w-full'>
-        <h1 className='mb-2 text-3xl font-bold'>Bookstore Inventory</h1>
-        <p className='text-muted-foreground'>
-          Browse and search through {pagination.totalCount} books in the
-          inventory
-        </p>
+      <div className='mb-6 flex w-full items-start justify-between'>
+        <div>
+          <h1 className='mb-2 text-3xl font-bold'>Bookstore Inventory</h1>
+          <p className='text-muted-foreground'>
+            Browse and search through {pagination.totalCount} books in the
+            inventory
+          </p>
+        </div> 
+        <div className='flex gap-2'>
+          <Link href={`/bookstore/${bookstoreSlug}`}>
+            <Button variant='outline'>
+              <Home className='mr-2 h-4 w-4' />
+              Home
+            </Button>
+          </Link>
+          <Link href={`/bookstore/${bookstoreSlug}/add`}>
+            <Button>Add Book</Button>
+          </Link>
+        </div>
       </div>
+
 
       {/* Search Bar */}
       <div className='mb-6 flex w-full max-w-2xl space-x-2'>

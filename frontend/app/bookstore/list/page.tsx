@@ -106,7 +106,7 @@ export default function BookstoreListPage() {
                   <TableCell>{bookstore.phone || 'N/A'}</TableCell>
                   <TableCell>{bookstore.email || 'N/A'}</TableCell>
                   <TableCell className='text-right'>
-                    <Link href={`/bookstore/${bookstore.slug}/inventory`}>
+                    <Link href={`/bookstore/${bookstore.slug}`}>
                       <Button variant='outline' size='sm'>
                         View Inventory
                       </Button>
