@@ -74,7 +74,9 @@ export function BookConfirmation({
       confirmedBooks.has(index)
     );
     onBooksConfirmed(booksToAdd);
-    toast.success(`${booksToAdd.length} books have been added to your inventory!`);
+    toast.success(
+      `${booksToAdd.length} books have been added to your inventory!`
+    );
   };
 
   const getBookStatus = (index: number) => {
@@ -95,14 +97,16 @@ export function BookConfirmation({
   };
 
   const hasConfirmedBooks = confirmedBooks.size > 0;
-  const activeBooks = editableBooks.filter((_, index) => !deniedBooks.has(index));
+  const activeBooks = editableBooks.filter(
+    (_, index) => !deniedBooks.has(index)
+  );
 
   return (
     <div className='space-y-4'>
       <div className='rounded-lg border'>
         <div className='max-h-[60vh] overflow-y-auto'>
           <Table>
-            <TableHeader className='sticky top-0 bg-background z-10'>
+            <TableHeader className='bg-background sticky top-0 z-10'>
               <TableRow>
                 <TableHead className='w-[40%]'>Title</TableHead>
                 <TableHead className='w-[30%]'>Author</TableHead>
@@ -113,7 +117,7 @@ export function BookConfirmation({
             <TableBody>
               {editableBooks.map((book, index) => {
                 const status = getBookStatus(index);
-                
+
                 return (
                   <TableRow key={index} className={getRowClassName(status)}>
                     <TableCell>
@@ -179,15 +183,16 @@ export function BookConfirmation({
 
       {activeBooks.length === 0 && (
         <div className='py-8 text-center text-gray-500'>
-          All books have been denied. Please upload new images or click cancel to try
-          again.
+          All books have been denied. Please upload new images or click cancel
+          to try again.
         </div>
       )}
 
       <div className='flex items-center justify-between border-t pt-4'>
         <div className='text-sm text-gray-600'>
           {confirmedBooks.size} confirmed, {deniedBooks.size} denied,{' '}
-          {editableBooks.length - confirmedBooks.size - deniedBooks.size} pending
+          {editableBooks.length - confirmedBooks.size - deniedBooks.size}{' '}
+          pending
         </div>
 
         <div className='flex gap-3'>

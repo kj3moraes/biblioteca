@@ -112,7 +112,8 @@ export default function Page() {
             <h1 className='text-2xl font-bold'>Add Images</h1>
             <p className='text-sm text-gray-500'>
               Add all the images that you want added to your inventory. Once the
-              identification process is over, you can review and confirm the detected books.
+              identification process is over, you can review and confirm the
+              detected books.
             </p>
           </div>
           <Link href={`/bookstore/${bookstoreSlug}`}>
@@ -139,7 +140,8 @@ export default function Page() {
             <div>
               <h2 className='text-xl font-bold'>Confirm Detected Books</h2>
               <p className='text-sm text-gray-500'>
-                Please review and edit the detected books below. Approve the books you want to add to your inventory.
+                Please review and edit the detected books below. Approve the
+                books you want to add to your inventory.
               </p>
             </div>
             <BookConfirmation
