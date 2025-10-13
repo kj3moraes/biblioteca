@@ -9,6 +9,7 @@ export async function GET() {
       select: {
         name: true,
         slug: true,
+        address: true,
         city: true,
         country: true,
         phone: true,

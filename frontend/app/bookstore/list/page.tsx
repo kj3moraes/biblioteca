@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 interface Bookstore {
   name: string;
   slug: string;
+  address: string;
   city: string;
   country: string;
   phone: string | null;
@@ -100,14 +101,14 @@ export default function BookstoreListPage() {
                     {bookstore.name}
                   </TableCell>
                   <TableCell>
-                    {bookstore.city}, {bookstore.country}
+                    {bookstore.address}
                   </TableCell>
                   <TableCell>{bookstore.phone || 'N/A'}</TableCell>
                   <TableCell>{bookstore.email || 'N/A'}</TableCell>
                   <TableCell className='text-right'>
                     <Link href={`/bookstore/${bookstore.slug}/inventory`}>
                       <Button variant='outline' size='sm'>
-                        View
+                        View Inventory
                       </Button>
                     </Link>
                   </TableCell>
