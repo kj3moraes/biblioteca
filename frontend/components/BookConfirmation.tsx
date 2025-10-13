@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Check, X } from 'lucide-react';
+import { toast } from 'sonner';
 import {
   Table,
   TableBody,
@@ -73,6 +74,7 @@ export function BookConfirmation({
       confirmedBooks.has(index)
     );
     onBooksConfirmed(booksToAdd);
+    toast.success(`${booksToAdd.length} books have been added to your inventory!`);
   };
 
   const getBookStatus = (index: number) => {

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Home } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface DetectedBook {
   title: string;
@@ -40,7 +41,8 @@ export default function Page() {
       });
 
       if (!upload_response.ok) {
-        throw new Error('Upload failed');
+        toast.error('Failed to upload images');
+        return;
       }
 
       // Send to inference API
@@ -53,21 +55,20 @@ export default function Page() {
       );
 
       if (!response.ok) {
-        throw new Error('Failed to process images');
+        toast.error('Failed to upload images');
+        return;
       }
 
       const result = await response.json();
-      console.log('Books detected:', result);
-
       if (result.books && result.books.length > 0) {
         setDetectedBooks(result.books);
         setShowConfirmation(true);
       } else {
-        alert('No books were detected in the uploaded images.');
+        toast.error('No books were detected in the uploaded images.');
       }
     } catch (error) {
       console.error('Error processing images:', error);
-      alert('Failed to process images. Please try again.');
+      toast.error('Failed to upload images. Please try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -88,23 +89,24 @@ export default function Page() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add books to inventory');
+        toast.error('Failed to add books to inventory');
+        return;
       }
 
-      alert(
+      toast.success(
         `${confirmedBooks.length} books have been added to your inventory!`
       );
       setShowConfirmation(false);
       setDetectedBooks([]);
     } catch (error) {
       console.error('Error adding books:', error);
-      alert('Failed to add books to inventory. Please try again.');
+      toast.error('Failed to add books to inventory. Please try again.');
     }
   };
 
   return (
     <div className='flex min-h-screen flex-col items-center p-8'>
-      <div className='w-full max-w-6xl space-y-6'>
+      <div className='w-full max-w-4xl space-y-6'>
         <div className='flex items-center justify-between'>
           <div>
             <h1 className='text-2xl font-bold'>Add Images</h1>
