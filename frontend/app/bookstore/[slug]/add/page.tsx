@@ -110,8 +110,8 @@ export default function Page() {
             <div>
               <h1 className='text-2xl font-bold'>Confirm Detected Books</h1>
               <p className='text-sm text-gray-500'>
-                Please review and edit the detected books below. Click confirm to
-                add them to your inventory.
+                Please review and edit the detected books below. Click confirm
+                to add them to your inventory.
               </p>
             </div>
             <Link href={`/bookstore/${bookstoreSlug}`}>

@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const {
       bookstoreSlug,
       books,
-    }: { bookstoreSlug: string; books: BookToAdd[] } = body; 
+    }: { bookstoreSlug: string; books: BookToAdd[] } = body;
 
     if (!bookstoreSlug) {
       return NextResponse.json(
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Find the bookstore
-    console.log("bookstore slug is ", bookstoreSlug)
+    console.log('bookstore slug is ', bookstoreSlug);
     const bookstore = await prisma.bookstore.findUnique({
       where: { slug: bookstoreSlug },
     });

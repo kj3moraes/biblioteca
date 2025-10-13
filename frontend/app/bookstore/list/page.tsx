@@ -66,7 +66,7 @@ export default function BookstoreListPage() {
       <div className='mb-8 flex items-center justify-between'>
         <div>
           <h1 className='text-3xl font-bold'>Bookstores</h1>
-          <p className='text-sm text-gray-500 mt-2'>
+          <p className='mt-2 text-sm text-gray-500'>
             Browse all bookstores in the database
           </p>
         </div>
@@ -77,7 +77,7 @@ export default function BookstoreListPage() {
 
       {bookstores.length === 0 ? (
         <div className='flex flex-col items-center justify-center py-12'>
-          <p className='text-lg text-gray-500 mb-4'>No bookstores found</p>
+          <p className='mb-4 text-lg text-gray-500'>No bookstores found</p>
           <Link href='/bookstore/add'>
             <Button>Add Your First Bookstore</Button>
           </Link>
@@ -100,9 +100,7 @@ export default function BookstoreListPage() {
                   <TableCell className='font-medium'>
                     {bookstore.name}
                   </TableCell>
-                  <TableCell>
-                    {bookstore.address}
-                  </TableCell>
+                  <TableCell>{bookstore.address}</TableCell>
                   <TableCell>{bookstore.phone || 'N/A'}</TableCell>
                   <TableCell>{bookstore.email || 'N/A'}</TableCell>
                   <TableCell className='text-right'>
@@ -120,9 +118,9 @@ export default function BookstoreListPage() {
       )}
 
       <div className='mt-4 text-sm text-gray-500'>
-        Total: {bookstores.length} {bookstores.length === 1 ? 'bookstore' : 'bookstores'}
+        Total: {bookstores.length}{' '}
+        {bookstores.length === 1 ? 'bookstore' : 'bookstores'}
       </div>
     </div>
   );
 }
-

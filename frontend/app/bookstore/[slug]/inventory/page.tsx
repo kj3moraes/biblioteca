@@ -90,7 +90,6 @@ export default function Page() {
           limit: '10',
         });
 
-
         if (search.trim()) {
           params.append('search', search.trim());
         }
@@ -152,7 +151,7 @@ export default function Page() {
             Browse and search through {pagination.totalCount} books in the
             inventory
           </p>
-        </div> 
+        </div>
         <div className='flex gap-2'>
           <Link href={`/bookstore/${bookstoreSlug}`}>
             <Button variant='outline'>
@@ -165,7 +164,6 @@ export default function Page() {
           </Link>
         </div>
       </div>
-
 
       {/* Search Bar */}
       <div className='mb-6 flex w-full max-w-2xl space-x-2'>

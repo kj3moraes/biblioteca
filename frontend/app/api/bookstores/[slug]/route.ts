@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
-    
+
     if (!slug) {
       return NextResponse.json(
         { error: 'Bookstore slug is required' },
@@ -52,4 +52,3 @@ export async function GET(
     );
   }
 }
-

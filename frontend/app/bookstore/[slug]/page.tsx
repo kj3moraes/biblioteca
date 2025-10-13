@@ -70,7 +70,7 @@ export default function BookstoreLandingPage() {
       <div className='w-full max-w-4xl space-y-8'>
         {/* Header */}
         <div className='text-center'>
-          <h1 className='text-4xl font-bold mb-2'>
+          <h1 className='mb-2 text-4xl font-bold'>
             Welcome to {bookstore.name}
           </h1>
           <p className='text-gray-500'>
@@ -79,14 +79,14 @@ export default function BookstoreLandingPage() {
         </div>
 
         {/* Action Cards */}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
           {/* Add Books Card */}
           <Link href={`/bookstore/${bookstore.slug}/add`}>
-            <div className='group cursor-pointer rounded-lg border-2 border-gray-200 p-8 transition-all hover:border-primary hover:shadow-lg h-full'>
-              <div className='flex flex-col items-center justify-center space-y-4 text-center h-full'>
-                <div className='rounded-full bg-primary/10 p-6 group-hover:bg-primary/20 transition-colors'>
+            <div className='group hover:border-primary h-full cursor-pointer rounded-lg border-2 border-gray-200 p-8 transition-all hover:shadow-lg'>
+              <div className='flex h-full flex-col items-center justify-center space-y-4 text-center'>
+                <div className='bg-primary/10 group-hover:bg-primary/20 rounded-full p-6 transition-colors'>
                   <svg
-                    className='h-12 w-12 text-primary'
+                    className='text-primary h-12 w-12'
                     fill='none'
                     stroke='currentColor'
                     viewBox='0 0 24 24'
@@ -100,7 +100,7 @@ export default function BookstoreLandingPage() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className='text-2xl font-semibold mb-2'>Add Books</h2>
+                  <h2 className='mb-2 text-2xl font-semibold'>Add Books</h2>
                   <p className='text-gray-500'>
                     Upload images to add new books to your inventory
                   </p>
@@ -111,11 +111,11 @@ export default function BookstoreLandingPage() {
 
           {/* View Inventory Card */}
           <Link href={`/bookstore/${bookstore.slug}/inventory`}>
-            <div className='group cursor-pointer rounded-lg border-2 border-gray-200 p-8 transition-all hover:border-primary hover:shadow-lg h-full'>
-              <div className='flex flex-col items-center justify-center space-y-4 text-center h-full'>
-                <div className='rounded-full bg-primary/10 p-6 group-hover:bg-primary/20 transition-colors'>
+            <div className='group hover:border-primary h-full cursor-pointer rounded-lg border-2 border-gray-200 p-8 transition-all hover:shadow-lg'>
+              <div className='flex h-full flex-col items-center justify-center space-y-4 text-center'>
+                <div className='bg-primary/10 group-hover:bg-primary/20 rounded-full p-6 transition-colors'>
                   <svg
-                    className='h-12 w-12 text-primary'
+                    className='text-primary h-12 w-12'
                     fill='none'
                     stroke='currentColor'
                     viewBox='0 0 24 24'
@@ -129,7 +129,7 @@ export default function BookstoreLandingPage() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className='text-2xl font-semibold mb-2'>
+                  <h2 className='mb-2 text-2xl font-semibold'>
                     View Inventory
                   </h2>
                   <p className='text-gray-500'>
@@ -151,4 +151,3 @@ export default function BookstoreLandingPage() {
     </div>
   );
 }
-
