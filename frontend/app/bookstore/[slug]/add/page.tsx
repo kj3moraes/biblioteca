@@ -1,6 +1,6 @@
 'use client';
 import { Dropzone } from '@/components/Dropzone';
-import { BookConfirmation } from '../../../../components/BookConfirmation';
+import { BookConfirmation } from '@/components/BookConfirmation';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
