@@ -3,7 +3,8 @@ import numpy as np
 from PIL import Image
 from typing import List
 import base64
-from openai import OpenAI
+import asyncio
+from openai import AsyncOpenAI
 import os
 import logging
 import io
@@ -15,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("biblioteca_api")
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = AsyncOpenAI(api_key=OPENAI_API_KEY)
 
 def bytes_to_np_img(data: bytes) -> np.ndarray:
     return np.array(Image.open(io.BytesIO(data)).convert("RGB"))
@@ -45,10 +46,10 @@ def extract_book_crops(image: np.ndarray, bboxes: np.ndarray) -> List[Image.Imag
             crops.append(Image.fromarray(crop))
     return crops
 
-def get_author_and_title(b64img: str) -> dict:
+async def get_author_and_title(b64img: str) -> dict:
     """Extract author and title from a book image using GPT Vision"""
     try:
-        completion = client.chat.completions.parse(
+        completion = await client.chat.completions.parse(
             model="gpt-4o",
             messages=[
                 {
