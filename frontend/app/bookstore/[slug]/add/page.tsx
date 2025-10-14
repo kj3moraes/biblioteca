@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Home } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface DetectedBook {
   title: string;
@@ -40,7 +41,8 @@ export default function Page() {
       });
 
       if (!upload_response.ok) {
-        throw new Error('Upload failed');
+        toast.error('Failed to upload images');
+        return;
       }
 
       // Send to inference API
@@ -53,21 +55,20 @@ export default function Page() {
       );
 
       if (!response.ok) {
-        throw new Error('Failed to process images');
+        toast.error('Failed to upload images');
+        return;
       }
 
       const result = await response.json();
-      console.log('Books detected:', result);
-
       if (result.books && result.books.length > 0) {
         setDetectedBooks(result.books);
         setShowConfirmation(true);
       } else {
-        alert('No books were detected in the uploaded images.');
+        toast.error('No books were detected in the uploaded images.');
       }
     } catch (error) {
       console.error('Error processing images:', error);
-      alert('Failed to process images. Please try again.');
+      toast.error('Failed to upload images. Please try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -88,59 +89,31 @@ export default function Page() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add books to inventory');
+        toast.error('Failed to add books to inventory');
+        return;
       }
 
-      alert(
+      toast.success(
         `${confirmedBooks.length} books have been added to your inventory!`
       );
       setShowConfirmation(false);
       setDetectedBooks([]);
     } catch (error) {
       console.error('Error adding books:', error);
-      alert('Failed to add books to inventory. Please try again.');
+      toast.error('Failed to add books to inventory. Please try again.');
     }
   };
 
-  if (showConfirmation) {
-    return (
-      <div className='flex h-screen flex-col items-center justify-center p-4'>
-        <div className='w-full max-w-4xl space-y-4'>
-          <div className='flex items-center justify-between'>
-            <div>
-              <h1 className='text-2xl font-bold'>Confirm Detected Books</h1>
-              <p className='text-sm text-gray-500'>
-                Please review and edit the detected books below. Click confirm
-                to add them to your inventory.
-              </p>
-            </div>
-            <Link href={`/bookstore/${bookstoreSlug}`}>
-              <Button variant='outline' size='sm'>
-                <Home className='mr-2 h-4 w-4' />
-                Home
-              </Button>
-            </Link>
-          </div>
-          <BookConfirmation
-            books={detectedBooks}
-            onBooksConfirmed={handleBooksConfirmed}
-            onCancel={() => setShowConfirmation(false)}
-          />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className='flex h-screen flex-col items-center justify-center'>
-      <div className='w-full max-w-2xl space-y-4'>
+    <div className='flex min-h-screen flex-col items-center p-8'>
+      <div className='w-full max-w-4xl space-y-6'>
         <div className='flex items-center justify-between'>
           <div>
             <h1 className='text-2xl font-bold'>Add Images</h1>
             <p className='text-sm text-gray-500'>
               Add all the images that you want added to your inventory. Once the
-              identification process is over, you will be prompted to check the
-              validity of the results.
+              identification process is over, you can review and confirm the
+              detected books.
             </p>
           </div>
           <Link href={`/bookstore/${bookstoreSlug}`}>
@@ -150,6 +123,7 @@ export default function Page() {
             </Button>
           </Link>
         </div>
+
         {isProcessing ? (
           <div className='flex h-64 w-full items-center justify-center rounded-lg border-2 border-dashed'>
             <div className='text-center'>
@@ -159,6 +133,26 @@ export default function Page() {
           </div>
         ) : (
           <Dropzone onFilesUpload={uploadImages} />
+        )}
+
+        {showConfirmation && detectedBooks.length > 0 && (
+          <div className='space-y-4'>
+            <div>
+              <h2 className='text-xl font-bold'>Confirm Detected Books</h2>
+              <p className='text-sm text-gray-500'>
+                Please review and edit the detected books below. Approve the
+                books you want to add to your inventory.
+              </p>
+            </div>
+            <BookConfirmation
+              books={detectedBooks}
+              onBooksConfirmed={handleBooksConfirmed}
+              onCancel={() => {
+                setShowConfirmation(false);
+                setDetectedBooks([]);
+              }}
+            />
+          </div>
         )}
       </div>
     </div>

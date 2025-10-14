@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -46,8 +47,10 @@ export default function Page() {
       console.log('Bookstore added successfully');
       // Once we have create the bookstore, we redirect to the add page
       router.push(`/bookstore/${data.slug}/add`);
+      toast.success('Bookstore added successfully');
     } else {
       console.log('Failed to add bookstore');
+      toast.error('Failed to add bookstore');
     }
   };
 
