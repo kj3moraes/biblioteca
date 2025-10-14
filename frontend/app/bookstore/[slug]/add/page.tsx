@@ -136,14 +136,6 @@ export default function Page() {
         )}
 
         {showConfirmation && detectedBooks.length > 0 && (
-          <div className='space-y-4'>
-            <div>
-              <h2 className='text-xl font-bold'>Confirm Detected Books</h2>
-              <p className='text-sm text-gray-500'>
-                Please review and edit the detected books below. Approve the
-                books you want to add to your inventory.
-              </p>
-            </div>
             <BookConfirmation
               books={detectedBooks}
               onBooksConfirmed={handleBooksConfirmed}
@@ -152,7 +144,6 @@ export default function Page() {
                 setDetectedBooks([]);
               }}
             />
-          </div>
         )}
       </div>
     </div>
