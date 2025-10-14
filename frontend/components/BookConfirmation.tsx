@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Check, X } from 'lucide-react';
+import { Check, X, CheckCheck, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Table,
@@ -69,14 +69,25 @@ export function BookConfirmation({
     setConfirmedBooks(newConfirmed);
   };
 
+  const handleConfirmAll = () => {
+    const allIndices = new Set(editableBooks.map((_, index) => index));
+    setConfirmedBooks(allIndices);
+    setDeniedBooks(new Set());
+    toast.success('All books confirmed');
+  };
+
+  const handleDenyAll = () => {
+    const allIndices = new Set(editableBooks.map((_, index) => index));
+    setDeniedBooks(allIndices);
+    setConfirmedBooks(new Set());
+    toast.info('All books denied');
+  };
+
   const handleFinalConfirm = () => {
     const booksToAdd = editableBooks.filter((_, index) =>
       confirmedBooks.has(index)
     );
     onBooksConfirmed(booksToAdd);
-    toast.success(
-      `${booksToAdd.length} books have been added to your inventory!`
-    );
   };
 
   const getBookStatus = (index: number) => {
@@ -103,6 +114,35 @@ export function BookConfirmation({
 
   return (
     <div className='space-y-4'>
+      <div className='mb-4 flex items-start justify-between gap-4'>
+        <div>
+          <h2 className='text-xl font-bold'>Confirm Detected Books</h2>
+          <p className='text-sm text-gray-500'>
+            Please review and edit the detected books below. Approve the
+            books you want to add to your inventory.
+          </p>
+        </div>
+        <div className='flex gap-2'>
+          <Button
+            variant='default'
+            size='sm'
+            onClick={handleConfirmAll}
+            className='bg-green-600 hover:bg-green-700'
+          >
+            <CheckCheck className='mr-2 h-4 w-4' />
+            Confirm All
+          </Button>
+          <Button
+            variant='destructive'
+            size='sm'
+            onClick={handleDenyAll}
+            className='bg-red-600 hover:bg-red-700'
+          >
+            <XCircle className='mr-2 h-4 w-4' />
+            Deny All
+          </Button>
+        </div>
+      </div>
       <div className='rounded-lg border'>
         <div className='max-h-[60vh] overflow-y-auto'>
           <Table>
@@ -167,6 +207,7 @@ export function BookConfirmation({
                           size='sm'
                           variant='destructive'
                           onClick={() => handleDeny(index)}
+                          className='bg-red-600 hover:bg-red-700'
                           disabled={status === 'denied'}
                         >
                           <X className='h-4 w-4' />

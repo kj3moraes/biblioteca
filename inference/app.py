@@ -5,6 +5,7 @@ from fastapi import File, UploadFile
 from ultralytics import YOLO, FastSAM
 import logging
 import torch
+import asyncio
 import os
 from openai import OpenAI
 from typing import List
@@ -94,26 +95,38 @@ async def predict(request: Request, files: List[UploadFile] = File(...)):
     
     logger.info(f"Total book crops extracted: {len(all_book_crops)}")
     
-    # Batch process all crops with OCR
+    async def process_all_crops():
+        tasks = []
+        for i, crop in enumerate(all_book_crops):
+            try:
+                # Convert crop to base64
+                b64_crop = encode_pil_to_b64(crop, fmt="JPEG")
+                # Create async task for this crop
+                tasks.append(get_author_and_title(b64_crop))
+            except Exception as e:
+                logger.error(f"Error preparing crop {i+1}: {e}")
+                tasks.append(asyncio.create_task(asyncio.sleep(0)))  # dummy task
+        
+        # Execute all requests concurrently
+        logger.info(f"Processing {len(tasks)} crops concurrently...")
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        return results
+    
+    # Run the async batch processing
+    ocr_results = await process_all_crops()
+
+    # Process results
     book_results = []
-    for i, crop in enumerate(all_book_crops):
-        try:
-            # Convert crop to base64
-            b64_crop = encode_pil_to_b64(crop, fmt="JPEG")
-            
-            # Get author and title using GPT Vision
-            book_info = get_author_and_title(b64_crop)
-            logger.info(book_info) 
-            # Only add if we got valid results
-            if book_info["author"] and book_info["title"]:
-                book_results.append((book_info["title"], book_info["author"]))
-                logger.info(f"OCR result {i+1}: {book_info['title']} by {book_info['author']}")
-            else:
-                logger.warning(f"OCR failed for crop {i+1}")
-                
-        except Exception as e:
-            logger.error(f"Error processing crop {i+1}: {e}")
+    for i, book_info in enumerate(ocr_results):
+        if isinstance(book_info, Exception):
+            logger.error(f"Error processing crop {i+1}: {book_info}")
             continue
+            
+        logger.info(book_info)
+        if book_info["author"] and book_info["title"]:
+            book_results.append((book_info["title"], book_info["author"]))
+        else:
+            logger.warning(f"OCR failed for crop {i+1}")
     
     # Count duplicate books
     book_counter = Counter(book_results)
