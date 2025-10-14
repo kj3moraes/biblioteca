@@ -7,12 +7,16 @@ on:
     paths:
       - 'inference/**'
       - '.github/workflows/deploy-inference.yml'
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:  # Allows manual triggering from GitHub UI
 
 jobs:
   deploy:
     name: Deploy to Fly.io
     runs-on: ubuntu-latest
+    environment: production
     
     steps:
       - name: Checkout code
